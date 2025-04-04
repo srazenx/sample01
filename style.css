@@ -1,100 +1,55 @@
-@import url('https://fonts.googleapis.com/css2?family=Zeyada&display=swap');
-
 body {
   margin: 0;
   padding: 0;
-  min-height: 100vh;
-  background: url("https://www.psdgraphics.com/wp-content/uploads/2022/01/white-math-paper-texture.jpg") center center / cover no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
   overflow: hidden;
-  font-family: 'Zeyada', cursive;
+  height: 100vh;
+  background: url("https://www.psdgraphics.com/wp-content/uploads/2022/01/white-math-paper-texture.jpg") center / cover no-repeat;
+  font-family: 'Arial', sans-serif;
+  position: relative;
 }
 
-/* General paper style */
 .paper {
   position: absolute;
-  background-image: url("https://i0.wp.com/textures.world/wp-content/uploads/2018/10/2-Millimeter-Paper-Background-copy.jpg?ssl=1");
-  background-size: cover;
-  background-position: center;
-  padding: 5vw;
-  width: 80vw;
+  top: 50%;
+  left: 50%;
+  width: 90vw;
   max-width: 400px;
-  min-width: 250px;
-  box-shadow: 2px 8px 16px rgba(0, 0, 0, 0.3);
+  transform: translate(-50%, -50%);
+  background: white;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
   border-radius: 8px;
+  padding: 20px;
   box-sizing: border-box;
-  transition: transform 0.2s ease;
+  z-index: 1;
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* Image paper */
-.paper.image img {
+.paper img {
   width: 100%;
   height: auto;
   border-radius: 6px;
-  display: block;
 }
 
-/* Heart paper (bottom layer) */
-.paper.heart {
-  width: 30vw;
-  height: 30vw;
-  min-width: 100px;
-  min-height: 100px;
-  background-color: pink;
-  border-radius: 50%;
-  box-shadow: 2px 8px 16px rgba(0, 0, 0, 0.25);
-  background-image: none;
-}
-
-/* Red paper with message */
 .paper.red {
-  background-color: #ffeaea;
+  background: #ffeaea;
   color: #900;
 }
 
-/* Text styles */
-p {
-  font-size: 5vw;
-  line-height: 1.5;
+.p1 {
+  font-size: 4vw;
   margin: 1rem 0;
   text-align: center;
-  color: #222;
-}
-
-.p1 {
-  font-size: 4.8vw;
-  font-weight: bold;
 }
 
 .p2 {
-  font-size: 4vw;
+  font-size: 3.5vw;
   color: #d60000;
+  text-align: center;
 }
 
-/* Make sure papers stack correctly */
-.paper:nth-child(n) {
-  z-index: 1;
-}
-
-@media (min-width: 768px) {
-  p {
-    font-size: 20px;
-  }
-
-  .p1 {
-    font-size: 22px;
-  }
-
-  .p2 {
-    font-size: 18px;
-  }
-
-  .paper {
-    width: 60vw;
-    max-width: 500px;
-    padding: 2rem;
-  }
+/* Make top paper visible */
+.paper[data-order="6"] {
+  z-index: 6;
+  opacity: 1;
 }
