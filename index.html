@@ -2,48 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Happy Birthday!</title>
-  <link href="https://fonts.googleapis.com/css2?family=Short+Stack&family=Homemade+Apple&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drag Papers</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <canvas id="confetti-canvas"></canvas>
-
-  <div class="paper heart">💖</div>
-
-  <div class="paper image">
-    <img src="images/1.jpg" alt="Image 1">
+  <div class="paper" data-order="6">
+    <p class="p1">Drag the papers to move!</p>
   </div>
 
-  <div class="paper image">
-    <img src="images/2.jpg" alt="Image 2">
+  <div class="paper" data-order="5">
+    <p class="p1">Happy Birthday</p>
+    <p class="p1">To You <span style="color: red;">🎂</span></p>
   </div>
 
-  <div class="paper image">
-    <img src="images/3.jpg" alt="Image 3">
-  </div>
-
-  <div class="paper red">
-    <p class="p1">Happy Birthday meri pyaari behen!💓💕🫶🏻 Aaj ka din sirf tere liye hai, aur mai dil se dua krta hu ki teri zindagi hamesha khushiyo se bhari rahe.🧿✨️</p>
-    <p class="p1">Tu meri zindagi ka sbse khoobsurat hissa hai✨️💕</p>
-    <p class="p1">Jo bhi spne tere dil me hai, mai dua krta hu ki wo sab poore ho jaye✨️</p>
-    <p class="p1">Aaj toh cake bhi extra tasty lagega aur celebration bhi hoga, kyuki meri behen ka birthday hai!💕💝🥰</p>
-    <p class="p1">Tu jaisi hai, waisi hi perfect hai. Kbhi bdlne ki zarurat nahi✨️🥰</p>
-    <p class="p1">Once again, Happy Birthday Subhi✨️💕💝🫶🏻🧿💓✨️🥰</p>
+  <div class="paper red" data-order="4">
+    <p class="p1">Happy Birthday meri pyaari behen!💓💕🫶🏻 Aaj ka din sirf tere liye hai, aur mai dil se dua krta hu ki teri zindagi hamesha khushiyo se bhari rahe.🧿✨️
+Tu meri zindagi ka sbse khoobsurat hissa hai✨️💕
+Jo bhi spne tere dil me hai, mai dua krta hu ki wo sab poore ho jaye✨️
+Aaj toh cake bhi extra tasty lagega aur celebration bhi hoga, kyuki meri behen ka birthday hai!💕💝🥰
+Tu jaisi hai, waisi hi perfect hai. Kbhi bdlne ki zarurat nahi✨️🥰
+Once again, Happy Birthday Subhi✨️💕💝🫶🏻🧿💓✨️🥰
+Enjoy your day✨️💓🧿/p>
     <p class="p2">Enjoy your day✨️💓🧿</p>
   </div>
 
-  <div class="paper">
-    <p class="p1">Happy Birthday</p>
-    <p class="p1">To You 🎂</p>
+  <div class="paper image" data-order="3">
+    <img src="images/3.jpg" alt="Image 3" />
   </div>
 
-  <div class="paper">
-    <p class="p1">Drag the papers to reveal the surprise!</p>
+  <div class="paper image" data-order="2">
+    <img src="images/2.jpg" alt="Image 2" />
+  </div>
+
+  <div class="paper image" data-order="1">
+    <img src="images/1.jpg" alt="Image 1" />
   </div>
 
   <script src="mobile.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </body>
 </html>
