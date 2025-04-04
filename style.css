@@ -1,19 +1,10 @@
-body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  height: 100vh;
-  background: url("https://www.psdgraphics.com/wp-content/uploads/2022/01/white-math-paper-texture.jpg") center / cover no-repeat;
-  font-family: 'Arial', sans-serif;
-  position: relative;
-}
-
 .paper {
   position: absolute;
   top: 50%;
   left: 50%;
   width: 90vw;
   max-width: 400px;
+  max-height: 90vh;
   transform: translate(-50%, -50%);
   background: white;
   box-shadow: 0 10px 20px rgba(0,0,0,0.3);
@@ -23,33 +14,6 @@ body {
   z-index: 1;
   opacity: 0;
   transition: transform 0.3s ease, opacity 0.3s ease;
-}
 
-.paper img {
-  width: 100%;
-  height: auto;
-  border-radius: 6px;
-}
-
-.paper.red {
-  background: #ffeaea;
-  color: #900;
-}
-
-.p1 {
-  font-size: 4vw;
-  margin: 1rem 0;
-  text-align: center;
-}
-
-.p2 {
-  font-size: 3.5vw;
-  color: #d60000;
-  text-align: center;
-}
-
-/* Make top paper visible */
-.paper[data-order="6"] {
-  z-index: 6;
-  opacity: 1;
+  overflow-y: auto; /* 🧠 important line to fix the hidden paragraph */
 }
