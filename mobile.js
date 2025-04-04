@@ -11,55 +11,62 @@ class Paper {
   rotation = Math.random() * 30 - 15;
   currentPaperX = 0;
   currentPaperY = 0;
-  rotating = false;
+  paper = null;
 
   init(paper) {
-    // Prevent default scrolling behavior on touchmove
-    paper.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+    this.paper = paper;
 
-    paper.addEventListener('touchstart', (e) => {
+    // Add initial rotation
+    paper.style.transform = `rotateZ(${this.rotation}deg)`;
+
+    // Prevent scroll while dragging
+    paper.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+
+    // Start dragging
+    paper.addEventListener('touchstart', e => {
       if (this.holdingPaper) return;
       this.holdingPaper = true;
 
-      paper.style.zIndex = highestZ;
-      highestZ += 1;
-
-      this.touchStartX = e.touches[0].clientX;
-      this.touchStartY = e.touches[0].clientY;
-      this.prevTouchX = this.touchStartX;
-      this.prevTouchY = this.touchStartY;
+      // Bring to front
+      paper.style.zIndex = highestZ++;
+      this.touchStartX = this.prevTouchX = e.touches[0].clientX;
+      this.touchStartY = this.prevTouchY = e.touches[0].clientY;
     });
 
-    paper.addEventListener('touchmove', (e) => {
-      e.preventDefault();
+    // Drag move
+    paper.addEventListener('touchmove', e => {
       if (!this.holdingPaper) return;
 
-      const touchMoveX = e.touches[0].clientX;
-      const touchMoveY = e.touches[0].clientY;
+      const touchX = e.touches[0].clientX;
+      const touchY = e.touches[0].clientY;
 
-      // Calculate velocity for smooth dragging
-      this.velX = touchMoveX - this.prevTouchX;
-      this.velY = touchMoveY - this.prevTouchY;
+      this.velX = touchX - this.prevTouchX;
+      this.velY = touchY - this.prevTouchY;
+
       this.currentPaperX += this.velX;
       this.currentPaperY += this.velY;
 
-      // Update previous touch coordinates
-      this.prevTouchX = touchMoveX;
-      this.prevTouchY = touchMoveY;
+      this.prevTouchX = touchX;
+      this.prevTouchY = touchY;
 
-      // Apply transform to paper element
-      paper.style.transform = `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
+      this.updateTransform();
     });
 
+    // End dragging
     paper.addEventListener('touchend', () => {
       this.holdingPaper = false;
     });
   }
+
+  updateTransform() {
+    this.paper.style.transform = `
+      translate(${this.currentPaperX}px, ${this.currentPaperY}px)
+      rotateZ(${this.rotation}deg)
+    `;
+  }
 }
 
-// Initialize the papers for touch events on mobile
-const papers = Array.from(document.querySelectorAll('.paper'));
-papers.forEach((paper) => {
-  const p = new Paper();
-  p.init(paper);
+// Initialize papers
+document.querySelectorAll('.paper').forEach(paper => {
+  new Paper().init(paper);
 });
