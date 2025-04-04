@@ -1,75 +1,78 @@
-let highestZ = 10;
-let removedPapers = 0;
-const papers = Array.from(document.querySelectorAll(".paper"));
-const totalPapers = papers.length;
+let highestZ = 1;
+let removedCount = 0;
+const totalPapers = document.querySelectorAll('.paper').length;
 
-papers.forEach((paper, index) => {
-  let holding = false;
-  let startX, startY, currentX = 0, currentY = 0;
+class Paper {
+  constructor(paperElement) {
+    this.paper = paperElement;
+    this.init();
+  }
 
-  paper.style.zIndex = highestZ + index;
+  init() {
+    this.paper.addEventListener('touchstart', (e) => this.startDrag(e), { passive: false });
+    this.paper.addEventListener('touchmove', (e) => this.onDrag(e), { passive: false });
+    this.paper.addEventListener('touchend', () => this.endDrag());
 
-  paper.addEventListener("touchstart", (e) => {
-    holding = true;
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    paper.style.transition = "none";
-  });
+    this.offsetX = 0;
+    this.offsetY = 0;
+    this.startX = 0;
+    this.startY = 0;
+    this.dragging = false;
 
-  paper.addEventListener("touchmove", (e) => {
-    if (!holding) return;
-    let dx = e.touches[0].clientX - startX;
-    let dy = e.touches[0].clientY - startY;
-    currentX += dx;
-    currentY += dy;
-    paper.style.transform = `translate(${currentX}px, ${currentY}px) rotateZ(-3deg)`;
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-  });
+    // Stack in correct order
+    this.paper.style.zIndex = highestZ;
+    highestZ++;
+  }
 
-  paper.addEventListener("touchend", () => {
-    holding = false;
-    // if moved far enough, remove paper
-    if (Math.abs(currentX) > 100 || Math.abs(currentY) > 100) {
-      paper.style.transition = "all 0.3s ease-out";
-      paper.style.opacity = 0;
-      paper.style.transform += " scale(1.2)";
+  startDrag(e) {
+    e.preventDefault();
+    this.dragging = true;
+    this.startX = e.touches[0].clientX;
+    this.startY = e.touches[0].clientY;
+  }
+
+  onDrag(e) {
+    if (!this.dragging) return;
+
+    const x = e.touches[0].clientX - this.startX + this.offsetX;
+    const y = e.touches[0].clientY - this.startY + this.offsetY;
+
+    this.paper.style.transform = `translate(${x}px, ${y}px) rotateZ(-3deg)`;
+
+    this.currentX = x;
+    this.currentY = y;
+  }
+
+  endDrag() {
+    this.dragging = false;
+
+    const movedFarEnough = Math.abs(this.currentX) > 100 || Math.abs(this.currentY) > 100;
+    if (movedFarEnough) {
+      this.paper.style.transition = 'transform 0.5s ease-out, opacity 0.5s';
+      this.paper.style.opacity = '0';
+      this.paper.style.transform = `translate(${this.currentX * 3}px, ${this.currentY * 3}px) rotateZ(30deg)`;
+
       setTimeout(() => {
-        paper.remove();
-        removedPapers++;
-        if (removedPapers === totalPapers) {
-          launchConfetti();
+        this.paper.remove();
+        removedCount++;
+
+        if (removedCount === totalPapers) {
+          confettiExplosion();
         }
-      }, 300);
+      }, 500);
     } else {
-      paper.style.transition = "all 0.3s ease";
-      paper.style.transform = "translate(-50%, -50%) rotateZ(-3deg)";
-      currentX = 0;
-      currentY = 0;
+      this.paper.style.transform = `translate(0px, 0px) rotateZ(-3deg)`;
     }
+  }
+}
+
+// Apply to all papers
+document.querySelectorAll('.paper').forEach(p => new Paper(p));
+
+function confettiExplosion() {
+  confetti({
+    particleCount: 150,
+    spread: 90,
+    origin: { y: 0.6 }
   });
-});
-
-function launchConfetti() {
-  const duration = 5 * 1000;
-  const end = Date.now() + duration;
-
-  (function frame() {
-    confetti({
-      particleCount: 5,
-      angle: 60,
-      spread: 55,
-      origin: { x: 0 },
-    });
-    confetti({
-      particleCount: 5,
-      angle: 120,
-      spread: 55,
-      origin: { x: 1 },
-    });
-
-    if (Date.now() < end) {
-      requestAnimationFrame(frame);
-    }
-  })();
 }
