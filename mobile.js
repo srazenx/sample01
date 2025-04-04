@@ -1,48 +1,75 @@
-let current = 6;
+let highestZ = 10;
+let removedPapers = 0;
+const papers = Array.from(document.querySelectorAll(".paper"));
+const totalPapers = papers.length;
 
-function enableTopPaper() {
-  const topPaper = document.querySelector(`.paper[data-order="${current}"]`);
-  if (!topPaper) return;
+papers.forEach((paper, index) => {
+  let holding = false;
+  let startX, startY, currentX = 0, currentY = 0;
 
-  let startX = 0;
-  let startY = 0;
-  let offsetX = 0;
-  let offsetY = 0;
-  let dragging = false;
+  paper.style.zIndex = highestZ + index;
 
-  topPaper.addEventListener("touchstart", (e) => {
-    dragging = true;
+  paper.addEventListener("touchstart", (e) => {
+    holding = true;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    paper.style.transition = "none";
+  });
+
+  paper.addEventListener("touchmove", (e) => {
+    if (!holding) return;
+    let dx = e.touches[0].clientX - startX;
+    let dy = e.touches[0].clientY - startY;
+    currentX += dx;
+    currentY += dy;
+    paper.style.transform = `translate(${currentX}px, ${currentY}px) rotateZ(-3deg)`;
     startX = e.touches[0].clientX;
     startY = e.touches[0].clientY;
   });
 
-  topPaper.addEventListener("touchmove", (e) => {
-    if (!dragging) return;
-    offsetX = e.touches[0].clientX - startX;
-    offsetY = e.touches[0].clientY - startY;
-    topPaper.style.transform = `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px))`;
-  });
-
-  topPaper.addEventListener("touchend", () => {
-    dragging = false;
-
-    const dist = Math.sqrt(offsetX ** 2 + offsetY ** 2);
-    if (dist > 100) {
-      topPaper.style.opacity = 0;
+  paper.addEventListener("touchend", () => {
+    holding = false;
+    // if moved far enough, remove paper
+    if (Math.abs(currentX) > 100 || Math.abs(currentY) > 100) {
+      paper.style.transition = "all 0.3s ease-out";
+      paper.style.opacity = 0;
+      paper.style.transform += " scale(1.2)";
       setTimeout(() => {
-        topPaper.style.display = "none";
-        current -= 1;
-        const nextPaper = document.querySelector(`.paper[data-order="${current}"]`);
-        if (nextPaper) {
-          nextPaper.style.opacity = 1;
-          nextPaper.style.zIndex = current;
-          enableTopPaper();
+        paper.remove();
+        removedPapers++;
+        if (removedPapers === totalPapers) {
+          launchConfetti();
         }
       }, 300);
     } else {
-      topPaper.style.transform = "translate(-50%, -50%)";
+      paper.style.transition = "all 0.3s ease";
+      paper.style.transform = "translate(-50%, -50%) rotateZ(-3deg)";
+      currentX = 0;
+      currentY = 0;
     }
   });
-}
+});
 
-enableTopPaper();
+function launchConfetti() {
+  const duration = 5 * 1000;
+  const end = Date.now() + duration;
+
+  (function frame() {
+    confetti({
+      particleCount: 5,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+    });
+    confetti({
+      particleCount: 5,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+    });
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  })();
+}
