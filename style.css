@@ -29,6 +29,7 @@ body {
   transform: translate(-50%, -50%) rotateZ(-3deg);
   box-shadow: 1px 10px 15px rgba(0,0,0,0.4);
   border-radius: 10px;
+  touch-action: none;
 }
 
 .paper.heart {
