@@ -1,48 +1,48 @@
-let highestZ = 1;
+let current = 6;
 
-class Paper {
-  constructor(paper) {
-    this.paper = paper;
-    this.holding = false;
-    this.startX = 0;
-    this.startY = 0;
-    this.offsetX = 0;
-    this.offsetY = 0;
-    this.rotation = Math.random() * 20 - 10;
+function enableTopPaper() {
+  const topPaper = document.querySelector(`.paper[data-order="${current}"]`);
+  if (!topPaper) return;
 
-    this.init();
-  }
+  let startX = 0;
+  let startY = 0;
+  let offsetX = 0;
+  let offsetY = 0;
+  let dragging = false;
 
-  init() {
-    this.paper.style.transform = `rotate(${this.rotation}deg)`;
+  topPaper.addEventListener("touchstart", (e) => {
+    dragging = true;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  });
 
-    this.paper.addEventListener("touchstart", (e) => {
-      this.holding = true;
-      this.startX = e.touches[0].clientX - this.offsetX;
-      this.startY = e.touches[0].clientY - this.offsetY;
+  topPaper.addEventListener("touchmove", (e) => {
+    if (!dragging) return;
+    offsetX = e.touches[0].clientX - startX;
+    offsetY = e.touches[0].clientY - startY;
+    topPaper.style.transform = `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px))`;
+  });
 
-      this.paper.style.zIndex = highestZ++;
-    });
+  topPaper.addEventListener("touchend", () => {
+    dragging = false;
 
-    this.paper.addEventListener("touchmove", (e) => {
-      if (!this.holding) return;
-
-      this.offsetX = e.touches[0].clientX - this.startX;
-      this.offsetY = e.touches[0].clientY - this.startY;
-
-      this.paper.style.transform = `translate(${this.offsetX}px, ${this.offsetY}px) rotate(${this.rotation}deg)`;
-    });
-
-    this.paper.addEventListener("touchend", () => {
-      this.holding = false;
-    });
-
-    // Prevent scrolling while dragging
-    this.paper.addEventListener("touchmove", (e) => e.preventDefault(), {
-      passive: false,
-    });
-  }
+    const dist = Math.sqrt(offsetX ** 2 + offsetY ** 2);
+    if (dist > 100) {
+      topPaper.style.opacity = 0;
+      setTimeout(() => {
+        topPaper.style.display = "none";
+        current -= 1;
+        const nextPaper = document.querySelector(`.paper[data-order="${current}"]`);
+        if (nextPaper) {
+          nextPaper.style.opacity = 1;
+          nextPaper.style.zIndex = current;
+          enableTopPaper();
+        }
+      }, 300);
+    } else {
+      topPaper.style.transform = "translate(-50%, -50%)";
+    }
+  });
 }
 
-// Initialize all papers
-document.querySelectorAll(".paper").forEach((el) => new Paper(el));
+enableTopPaper();
