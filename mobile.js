@@ -1,72 +1,48 @@
 let highestZ = 1;
 
 class Paper {
-  holdingPaper = false;
-  touchStartX = 0;
-  touchStartY = 0;
-  prevTouchX = 0;
-  prevTouchY = 0;
-  velX = 0;
-  velY = 0;
-  rotation = Math.random() * 30 - 15;
-  currentPaperX = 0;
-  currentPaperY = 0;
-  paper = null;
-
-  init(paper) {
+  constructor(paper) {
     this.paper = paper;
+    this.holding = false;
+    this.startX = 0;
+    this.startY = 0;
+    this.offsetX = 0;
+    this.offsetY = 0;
+    this.rotation = Math.random() * 20 - 10;
 
-    // Add initial rotation
-    paper.style.transform = `rotateZ(${this.rotation}deg)`;
-
-    // Prevent scroll while dragging
-    paper.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
-
-    // Start dragging
-    paper.addEventListener('touchstart', e => {
-      if (this.holdingPaper) return;
-      this.holdingPaper = true;
-
-      // Bring to front
-      paper.style.zIndex = highestZ++;
-      this.touchStartX = this.prevTouchX = e.touches[0].clientX;
-      this.touchStartY = this.prevTouchY = e.touches[0].clientY;
-    });
-
-    // Drag move
-    paper.addEventListener('touchmove', e => {
-      if (!this.holdingPaper) return;
-
-      const touchX = e.touches[0].clientX;
-      const touchY = e.touches[0].clientY;
-
-      this.velX = touchX - this.prevTouchX;
-      this.velY = touchY - this.prevTouchY;
-
-      this.currentPaperX += this.velX;
-      this.currentPaperY += this.velY;
-
-      this.prevTouchX = touchX;
-      this.prevTouchY = touchY;
-
-      this.updateTransform();
-    });
-
-    // End dragging
-    paper.addEventListener('touchend', () => {
-      this.holdingPaper = false;
-    });
+    this.init();
   }
 
-  updateTransform() {
-    this.paper.style.transform = `
-      translate(${this.currentPaperX}px, ${this.currentPaperY}px)
-      rotateZ(${this.rotation}deg)
-    `;
+  init() {
+    this.paper.style.transform = `rotate(${this.rotation}deg)`;
+
+    this.paper.addEventListener("touchstart", (e) => {
+      this.holding = true;
+      this.startX = e.touches[0].clientX - this.offsetX;
+      this.startY = e.touches[0].clientY - this.offsetY;
+
+      this.paper.style.zIndex = highestZ++;
+    });
+
+    this.paper.addEventListener("touchmove", (e) => {
+      if (!this.holding) return;
+
+      this.offsetX = e.touches[0].clientX - this.startX;
+      this.offsetY = e.touches[0].clientY - this.startY;
+
+      this.paper.style.transform = `translate(${this.offsetX}px, ${this.offsetY}px) rotate(${this.rotation}deg)`;
+    });
+
+    this.paper.addEventListener("touchend", () => {
+      this.holding = false;
+    });
+
+    // Prevent scrolling while dragging
+    this.paper.addEventListener("touchmove", (e) => e.preventDefault(), {
+      passive: false,
+    });
   }
 }
 
-// Initialize papers
-document.querySelectorAll('.paper').forEach(paper => {
-  new Paper().init(paper);
-});
+// Initialize all papers
+document.querySelectorAll(".paper").forEach((el) => new Paper(el));
