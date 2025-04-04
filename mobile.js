@@ -1,86 +1,107 @@
 let highestZ = 1;
-
-const papers = Array.from(document.querySelectorAll('.paper'))
-  .sort((a, b) => +b.dataset.order - +a.dataset.order); // reverse order
-
-papers.forEach((paper, index) => {
-  if (index === 0) paper.setAttribute('data-visible', 'true');
-  const p = new Paper();
-  p.init(paper);
-});
+let currentTop = 0;
+const papers = Array.from(document.querySelectorAll('.paper'));
+const totalPapers = papers.length;
 
 class Paper {
-  holdingPaper = false;
-  startX = 0;
-  startY = 0;
-  currentX = 0;
-  currentY = 0;
-  rotation = Math.random() * 10 - 5;
+  constructor(paper, index) {
+    this.paper = paper;
+    this.index = index;
+    this.holdingPaper = false;
+    this.touchStartX = 0;
+    this.touchStartY = 0;
+    this.prevTouchX = 0;
+    this.prevTouchY = 0;
+    this.velX = 0;
+    this.velY = 0;
+    this.rotation = Math.random() * 30 - 15;
+    this.currentPaperX = 0;
+    this.currentPaperY = 0;
 
-  init(paper) {
-    paper.addEventListener('touchstart', (e) => {
+    this.init();
+  }
+
+  init() {
+    this.paper.style.zIndex = highestZ;
+    highestZ++;
+
+    this.paper.addEventListener('touchstart', (e) => {
+      if (this.index !== currentTop) return;
       this.holdingPaper = true;
-      this.startX = e.touches[0].clientX;
-      this.startY = e.touches[0].clientY;
-      paper.style.transition = 'none';
+
+      this.touchStartX = e.touches[0].clientX;
+      this.touchStartY = e.touches[0].clientY;
+      this.prevTouchX = this.touchStartX;
+      this.prevTouchY = this.touchStartY;
     });
 
-    paper.addEventListener('touchmove', (e) => {
-      if (!this.holdingPaper) return;
-      const moveX = e.touches[0].clientX - this.startX;
-      const moveY = e.touches[0].clientY - this.startY;
-      this.currentX = moveX;
-      this.currentY = moveY;
-      paper.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${this.rotation}deg)`;
+    this.paper.addEventListener('touchmove', (e) => {
+      if (!this.holdingPaper || this.index !== currentTop) return;
+
+      const touchMoveX = e.touches[0].clientX;
+      const touchMoveY = e.touches[0].clientY;
+
+      this.velX = touchMoveX - this.prevTouchX;
+      this.velY = touchMoveY - this.prevTouchY;
+      this.currentPaperX += this.velX;
+      this.currentPaperY += this.velY;
+
+      this.prevTouchX = touchMoveX;
+      this.prevTouchY = touchMoveY;
+
+      this.paper.style.transform = `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
     });
 
-    paper.addEventListener('touchend', () => {
-      if (!this.holdingPaper) return;
+    this.paper.addEventListener('touchend', () => {
+      if (!this.holdingPaper || this.index !== currentTop) return;
       this.holdingPaper = false;
-      paper.style.transition = 'transform 0.3s ease';
-      if (Math.abs(this.currentX) > 100 || Math.abs(this.currentY) > 100) {
-        paper.remove();
-        showNextPaper();
+
+      if (Math.abs(this.currentPaperX) > window.innerWidth * 0.3 || Math.abs(this.currentPaperY) > window.innerHeight * 0.3) {
+        this.paper.style.transition = 'transform 0.3s ease-out';
+        this.paper.style.transform += ` translateX(${this.velX * 10}px) translateY(${this.velY * 10}px)`;
+        setTimeout(() => {
+          this.paper.style.display = 'none';
+          currentTop++;
+          if (currentTop === totalPapers) {
+            launchConfetti();
+          }
+        }, 300);
       } else {
-        paper.style.transform = `translate(0, 0) rotate(${this.rotation}deg)`;
+        this.resetPosition();
       }
     });
   }
-}
 
-function showNextPaper() {
-  const remaining = document.querySelectorAll('.paper');
-  if (remaining.length === 0) {
-    fireConfetti();
-    return;
+  resetPosition() {
+    this.paper.style.transition = 'transform 0.3s ease';
+    this.currentPaperX = 0;
+    this.currentPaperY = 0;
+    this.paper.style.transform = `translateX(0px) translateY(0px) rotateZ(${this.rotation}deg)`;
+    setTimeout(() => {
+      this.paper.style.transition = '';
+    }, 300);
   }
-
-  const next = remaining[remaining.length - 1];
-  next.setAttribute('data-visible', 'true');
 }
 
-function fireConfetti() {
-  const duration = 3 * 1000;
-  const animationEnd = Date.now() + duration;
-  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+papers.reverse().forEach((paper, index) => {
+  new Paper(paper, index);
+});
 
-  function randomInRange(min, max) {
-    return Math.random() * (max - min) + min;
-  }
+// Confetti logic
+function launchConfetti() {
+  const canvas = document.createElement('canvas');
+  canvas.id = 'confetti-canvas';
+  document.body.appendChild(canvas);
+  const confetti = new ConfettiGenerator({ target: 'confetti-canvas' });
+  confetti.render();
 
-  const interval = setInterval(function () {
-    const timeLeft = animationEnd - Date.now();
-
-    if (timeLeft <= 0) {
-      return clearInterval(interval);
-    }
-
-    confetti(Object.assign({}, defaults, {
-      particleCount: 50,
-      origin: {
-        x: randomInRange(0.1, 0.9),
-        y: Math.random() - 0.2
-      }
-    }));
-  }, 250);
+  setTimeout(() => {
+    confetti.clear();
+    canvas.remove();
+  }, 5000);
 }
+
+// ConfettiGenerator CDN script loader
+const script = document.createElement('script');
+script.src = "https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js";
+document.body.appendChild(script);
