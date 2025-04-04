@@ -1,48 +1,86 @@
-let current = 6;
+let highestZ = 1;
 
-function enableTopPaper() {
-  const topPaper = document.querySelector(`.paper[data-order="${current}"]`);
-  if (!topPaper) return;
+const papers = Array.from(document.querySelectorAll('.paper'))
+  .sort((a, b) => +b.dataset.order - +a.dataset.order); // reverse order
 
-  let startX = 0;
-  let startY = 0;
-  let offsetX = 0;
-  let offsetY = 0;
-  let dragging = false;
+papers.forEach((paper, index) => {
+  if (index === 0) paper.setAttribute('data-visible', 'true');
+  const p = new Paper();
+  p.init(paper);
+});
 
-  topPaper.addEventListener("touchstart", (e) => {
-    dragging = true;
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-  });
+class Paper {
+  holdingPaper = false;
+  startX = 0;
+  startY = 0;
+  currentX = 0;
+  currentY = 0;
+  rotation = Math.random() * 10 - 5;
 
-  topPaper.addEventListener("touchmove", (e) => {
-    if (!dragging) return;
-    offsetX = e.touches[0].clientX - startX;
-    offsetY = e.touches[0].clientY - startY;
-    topPaper.style.transform = `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px))`;
-  });
+  init(paper) {
+    paper.addEventListener('touchstart', (e) => {
+      this.holdingPaper = true;
+      this.startX = e.touches[0].clientX;
+      this.startY = e.touches[0].clientY;
+      paper.style.transition = 'none';
+    });
 
-  topPaper.addEventListener("touchend", () => {
-    dragging = false;
+    paper.addEventListener('touchmove', (e) => {
+      if (!this.holdingPaper) return;
+      const moveX = e.touches[0].clientX - this.startX;
+      const moveY = e.touches[0].clientY - this.startY;
+      this.currentX = moveX;
+      this.currentY = moveY;
+      paper.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${this.rotation}deg)`;
+    });
 
-    const dist = Math.sqrt(offsetX ** 2 + offsetY ** 2);
-    if (dist > 100) {
-      topPaper.style.opacity = 0;
-      setTimeout(() => {
-        topPaper.style.display = "none";
-        current -= 1;
-        const nextPaper = document.querySelector(`.paper[data-order="${current}"]`);
-        if (nextPaper) {
-          nextPaper.style.opacity = 1;
-          nextPaper.style.zIndex = current;
-          enableTopPaper();
-        }
-      }, 300);
-    } else {
-      topPaper.style.transform = "translate(-50%, -50%)";
-    }
-  });
+    paper.addEventListener('touchend', () => {
+      if (!this.holdingPaper) return;
+      this.holdingPaper = false;
+      paper.style.transition = 'transform 0.3s ease';
+      if (Math.abs(this.currentX) > 100 || Math.abs(this.currentY) > 100) {
+        paper.remove();
+        showNextPaper();
+      } else {
+        paper.style.transform = `translate(0, 0) rotate(${this.rotation}deg)`;
+      }
+    });
+  }
 }
 
-enableTopPaper();
+function showNextPaper() {
+  const remaining = document.querySelectorAll('.paper');
+  if (remaining.length === 0) {
+    fireConfetti();
+    return;
+  }
+
+  const next = remaining[remaining.length - 1];
+  next.setAttribute('data-visible', 'true');
+}
+
+function fireConfetti() {
+  const duration = 3 * 1000;
+  const animationEnd = Date.now() + duration;
+  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+  function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  const interval = setInterval(function () {
+    const timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+
+    confetti(Object.assign({}, defaults, {
+      particleCount: 50,
+      origin: {
+        x: randomInRange(0.1, 0.9),
+        y: Math.random() - 0.2
+      }
+    }));
+  }, 250);
+}
