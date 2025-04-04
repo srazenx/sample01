@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Drag Papers</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Short+Stack&family=Homemade+Apple&display=swap">
-  <link rel="stylesheet" href="./style.css">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Short+Stack&family=Homemade+Apple&family=Zeyada&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
 
@@ -14,27 +18,54 @@
   <div class="paper image">
     <p></p>
     <p></p>
-    <img src="images/1.jpg" alt="Image 1">
+    <img 
+      src="images/1.jpg" 
+      alt="Image 1"
+      loading="lazy"
+      width="1080"
+      height="1920"
+      srcset="images/1.jpg 1080w"
+      sizes="(max-width: 768px) 90vw, 600px"
+    />
   </div>
 
   <div class="paper image">
     <p></p>
-    <img src="images/2.jpg" alt="Image 2">
+    <img 
+      src="images/2.jpg" 
+      alt="Image 2"
+      loading="lazy"
+      width="720"
+      height="1280"
+      srcset="images/2.jpg 720w"
+      sizes="(max-width: 768px) 90vw, 600px"
+    />
   </div>
 
   <div class="paper image">
     <p></p>
     <p></p>
-    <img src="images/3.jpg" alt="Image 3">
+    <img 
+      src="images/3.jpg" 
+      alt="Image 3"
+      loading="lazy"
+      width="899"
+      height="1599"
+      srcset="images/3.jpg 899w"
+      sizes="(max-width: 768px) 90vw, 600px"
+    />
   </div>
 
   <div class="paper red">
-    <p class="p1">Happy Birthday meri pyaari behen!💓💕🫶🏻 Aaj ka din sirf tere liye hai, aur mai dil se dua krta hu ki teri zindagi hamesha khushiyo se bhari rahe.🧿✨️
-Tu meri zindagi ka sbse khoobsurat hissa hai✨️💕
-Jo bhi spne tere dil me hai, mai dua krta hu ki wo sab poore ho jaye✨️
-Aaj toh cake bhi extra tasty lagega aur celebration bhi hoga, kyuki meri behen ka birthday hai!💕💝🥰
-Tu jaisi hai, waisi hi perfect hai. Kbhi bdlne ki zarurat nahi✨️🥰
-Once again, Happy Birthday Subhi✨️💕💝🫶🏻🧿💓✨️🥰</p>
+    <p class="p1">
+      Happy Birthday meri pyaari behen!💓💕🫶🏻 Aaj ka din sirf tere liye hai, 
+      aur mai dil se dua krta hu ki teri zindagi hamesha khushiyo se bhari rahe.🧿✨️
+      Tu meri zindagi ka sbse khoobsurat hissa hai✨️💕 Jo bhi spne tere dil me hai,
+      mai dua krta hu ki wo sab poore ho jaye✨️
+      Aaj toh cake bhi extra tasty lagega aur celebration bhi hoga, kyuki meri behen ka birthday hai!💕💝🥰
+      Tu jaisi hai, waisi hi perfect hai. Kbhi bdlne ki zarurat nahi✨️🥰
+      Once again, Happy Birthday Subhi✨️💕💝🫶🏻🧿💓✨️🥰
+    </p>
     <p class="p2">Enjoy your day✨️💓🧿</p>
   </div>
 
@@ -47,6 +78,7 @@ Once again, Happy Birthday Subhi✨️💕💝🫶🏻🧿💓✨️🥰</p>
     <p class="p1">Drag the papers to move!</p>
   </div>
 
+  <!-- JS -->
   <script src="./mobile.js"></script>
 </body>
 </html>
