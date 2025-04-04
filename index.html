@@ -3,44 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Drag the Papers</title>
-  <link rel="stylesheet" href="./style.css" />
+  <title>Drag Papers</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <!-- Instruction Paper (Topmost) -->
-  <div class="paper">
+  <div class="paper" data-order="6">
     <p class="p1">Drag the papers to move!</p>
   </div>
 
-  <!-- Greeting Paper -->
-  <div class="paper">
+  <div class="paper" data-order="5">
     <p class="p1">Happy Birthday</p>
     <p class="p1">To You <span style="color: red;">🎂</span></p>
   </div>
 
-  <!-- Message Paper -->
-  <div class="paper red">
-    <p class="p1">Happy Birthday meri pyaari behen!💓💕🫶🏻 Aaj ka din sirf tere liye hai...<br>Tu jaisi hai, waisi hi perfect hai. Kbhi bdlne ki zarurat nahi✨️🥰<br><br>Once again, Happy Birthday Subhi✨️💕💝🫶🏻🧿💓✨️🥰</p>
+  <div class="paper red" data-order="4">
+    <p class="p1">Happy Birthday meri pyaari behen!💓💕🫶🏻 Aaj ka din sirf tere liye hai...</p>
     <p class="p2">Enjoy your day✨️💓🧿</p>
   </div>
 
-  <!-- Images in Reverse Order (last revealed on top) -->
-  <div class="paper image">
-    <img src="images/3.jpg" alt="Image 3" width="899" height="1599" loading="lazy" />
+  <div class="paper image" data-order="3">
+    <img src="images/3.jpg" alt="Image 3" />
   </div>
 
-  <div class="paper image">
-    <img src="images/2.jpg" alt="Image 2" width="720" height="1280" loading="lazy" />
+  <div class="paper image" data-order="2">
+    <img src="images/2.jpg" alt="Image 2" />
   </div>
 
-  <div class="paper image">
-    <img src="images/1.jpg" alt="Image 1" width="1080" height="1920" loading="lazy" />
+  <div class="paper image" data-order="1">
+    <img src="images/1.jpg" alt="Image 1" />
   </div>
 
-  <!-- Heart (Bottom Layer) -->
-  <div class="paper heart"></div>
-
-  <script src="./mobile.js"></script>
+  <script src="mobile.js"></script>
 </body>
 </html>
