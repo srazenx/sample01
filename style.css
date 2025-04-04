@@ -17,7 +17,6 @@ body {
   width: 90vw;
   max-width: 450px;
   max-height: 90vh;
-  height: auto;
   transform: translate(-50%, -50%);
   background: white;
   box-shadow: 0 10px 20px rgba(0,0,0,0.3);
@@ -31,6 +30,11 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+}
+
+.paper[data-visible="true"] {
+  opacity: 1;
+  z-index: 10;
 }
 
 .paper::-webkit-scrollbar {
@@ -72,8 +76,27 @@ body {
   margin-top: 1rem;
 }
 
-/* Show only the top paper */
-.paper[data-order="6"] {
-  z-index: 6;
-  opacity: 1;
+.paper.heart {
+  background: #ffdde1;
+  border-radius: 50%;
+  width: 40vw;
+  height: 40vw;
+  max-width: 200px;
+  max-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+/* Confetti canvas */
+#confetti-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
 }
