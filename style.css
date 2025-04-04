@@ -41,7 +41,8 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #ff6b6b;
-  overflow: hidden;
+  font-size: 10vw;
+  color: white;
   z-index: 1;
 }
 
@@ -85,12 +86,3 @@ p {
   pointer-events: none;
   z-index: 9999;
 }
-
-/* Z-index order for stacking */
-.paper:nth-child(8) { z-index: 8; } /* drag to reveal */
-.paper:nth-child(7) { z-index: 7; } /* Happy Birthday */
-.paper:nth-child(6) { z-index: 6; } /* Paragraph */
-.paper:nth-child(5) { z-index: 5; } /* image 3 */
-.paper:nth-child(4) { z-index: 4; } /* image 2 */
-.paper:nth-child(3) { z-index: 3; } /* image 1 */
-.paper:nth-child(2) { z-index: 2; } /* heart */
