@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Zeyada&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Short+Stack&family=Homemade+Apple&display=swap');
 
 body {
   margin: 0;
@@ -6,7 +6,7 @@ body {
   overflow: hidden;
   height: 100vh;
   background: url("https://www.psdgraphics.com/wp-content/uploads/2022/01/white-math-paper-texture.jpg") center / cover no-repeat;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Short Stack', cursive;
   position: relative;
 }
 
@@ -55,8 +55,9 @@ body {
 }
 
 .p1 {
-  font-size: 4.2vw;
-  line-height: 1.5;
+  font-family: 'Short Stack', cursive;
+  font-size: 4.5vw;
+  line-height: 1.6;
   margin-bottom: 1.2rem;
   text-align: center;
   white-space: normal;
@@ -64,12 +65,14 @@ body {
 }
 
 .p2 {
-  font-size: 4vw;
+  font-family: 'Homemade Apple', cursive;
+  font-size: 5.2vw;
   color: #d60000;
   text-align: center;
+  margin-top: 1rem;
 }
 
-/* Show only top paper */
+/* Show only the top paper */
 .paper[data-order="6"] {
   z-index: 6;
   opacity: 1;
