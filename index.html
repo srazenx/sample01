@@ -2,83 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Drag Papers</title>
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Short+Stack&family=Homemade+Apple&family=Zeyada&display=swap" rel="stylesheet">
-
-  <!-- Styles -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drag the Papers</title>
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
 
-  <div class="paper heart"></div>
-
-  <div class="paper image">
-    <p></p>
-    <p></p>
-    <img 
-      src="images/1.jpg" 
-      alt="Image 1"
-      loading="lazy"
-      width="1080"
-      height="1920"
-      srcset="images/1.jpg 1080w"
-      sizes="(max-width: 768px) 90vw, 600px"
-    />
+  <!-- Instruction Paper (Topmost) -->
+  <div class="paper">
+    <p class="p1">Drag the papers to move!</p>
   </div>
 
-  <div class="paper image">
-    <p></p>
-    <img 
-      src="images/2.jpg" 
-      alt="Image 2"
-      loading="lazy"
-      width="720"
-      height="1280"
-      srcset="images/2.jpg 720w"
-      sizes="(max-width: 768px) 90vw, 600px"
-    />
-  </div>
-
-  <div class="paper image">
-    <p></p>
-    <p></p>
-    <img 
-      src="images/3.jpg" 
-      alt="Image 3"
-      loading="lazy"
-      width="899"
-      height="1599"
-      srcset="images/3.jpg 899w"
-      sizes="(max-width: 768px) 90vw, 600px"
-    />
-  </div>
-
-  <div class="paper red">
-    <p class="p1">
-      Happy Birthday meri pyaari behen!💓💕🫶🏻 Aaj ka din sirf tere liye hai, 
-      aur mai dil se dua krta hu ki teri zindagi hamesha khushiyo se bhari rahe.🧿✨️
-      Tu meri zindagi ka sbse khoobsurat hissa hai✨️💕 Jo bhi spne tere dil me hai,
-      mai dua krta hu ki wo sab poore ho jaye✨️
-      Aaj toh cake bhi extra tasty lagega aur celebration bhi hoga, kyuki meri behen ka birthday hai!💕💝🥰
-      Tu jaisi hai, waisi hi perfect hai. Kbhi bdlne ki zarurat nahi✨️🥰
-      Once again, Happy Birthday Subhi✨️💕💝🫶🏻🧿💓✨️🥰
-    </p>
-    <p class="p2">Enjoy your day✨️💓🧿</p>
-  </div>
-
+  <!-- Greeting Paper -->
   <div class="paper">
     <p class="p1">Happy Birthday</p>
     <p class="p1">To You <span style="color: red;">🎂</span></p>
   </div>
 
-  <div class="paper">
-    <p class="p1">Drag the papers to move!</p>
+  <!-- Message Paper -->
+  <div class="paper red">
+    <p class="p1">Happy Birthday meri pyaari behen!💓💕🫶🏻 Aaj ka din sirf tere liye hai...<br>Tu jaisi hai, waisi hi perfect hai. Kbhi bdlne ki zarurat nahi✨️🥰<br><br>Once again, Happy Birthday Subhi✨️💕💝🫶🏻🧿💓✨️🥰</p>
+    <p class="p2">Enjoy your day✨️💓🧿</p>
   </div>
 
-  <!-- JS -->
+  <!-- Images in Reverse Order (last revealed on top) -->
+  <div class="paper image">
+    <img src="images/3.jpg" alt="Image 3" width="899" height="1599" loading="lazy" />
+  </div>
+
+  <div class="paper image">
+    <img src="images/2.jpg" alt="Image 2" width="720" height="1280" loading="lazy" />
+  </div>
+
+  <div class="paper image">
+    <img src="images/1.jpg" alt="Image 1" width="1080" height="1920" loading="lazy" />
+  </div>
+
+  <!-- Heart (Bottom Layer) -->
+  <div class="paper heart"></div>
+
   <script src="./mobile.js"></script>
 </body>
 </html>
